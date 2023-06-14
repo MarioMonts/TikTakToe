@@ -11,6 +11,7 @@ void instrucciones();
 char AskYesNo(string question);
 char humansymbol();
 char opponent(char player);
+char winner(vector<char> board);
 
 const char EMPTY = ' '; //Constante global para determinar el valor en los espacios que en este caso es vacio
 const char  X = 'X'; //Creamos una variable global porque es un valor que es parte del juego
@@ -20,26 +21,28 @@ const char TIE = 'T';
 
 int main()
 {
-	
+	char validation;
 	char player = humansymbol(); //Para que tome el valor de la funcion que creamos abajo en caso de querer comenzar primero
 	char computer = opponent(player); //Para que tome el valor contrario que elija el jugador usando la funcion de opponent
 	char turn = X ; //porque es mas natural que el juego inicie con la X. Toma su valor de la constante global
 
 
 	const int NUM_SQUARES = 9; //Contsante para declarar el tamaño
-	vector<char> board(NUM_SQUARES, EMPTY); /// 10 es el numero de espacios y los espacios van a estar vacios
+	//vector<char> board(NUM_SQUARES, EMPTY); /// 10 es el numero de espacios y los espacios van a estar vacios
+	vector<char> board = { 'X', 'X', 'X', };
+
+
 
 	//Mostrar Instrucciones
 	instrucciones();
 	
    //Funcion para que el jugador elija que letra quiere usar
 
-	while (winner() == NO_ONE)
+	validation = winner(board);
+	cout << "El ganador es " << validation << endl;
 
 
 }
-
-
 
 
 void instrucciones()
@@ -115,13 +118,58 @@ char opponent(char player)
 //Tarea: Solo es crear la funcion para que me retorne lo de abajo. 
 //Tarea: Para vlidar que jale, crear una nueva linea de mi vector board y agregarle valores para saber si sirve. board = {x,x,x,0,0,0...etc.)
 
-char winner(board)
+char winner(vector<char> board)
 {
+	char result;
 
-	return X;
-	return O;
-	return NO_ONE;
-	return TIE;	
+	if (board[0] == 'X' && board[1] == 'X' && board[2] == 'X')
+		return X;
+	if (board[3] == 'X' && board[4] == 'X' && board[5] == 'X')
+		return X;
+	if (board[6] == 'X' && board[7] == 'X' && board[8] == 'X')
+		return X;
+
+	if (board[0] == 'X' && board[3] == 'X' && board[6] == 'X')
+		return X;
+	if (board[1] == 'X' && board[4] == 'X' && board[7] == 'X')
+		return X;
+	if (board[2] == 'X' && board[5] == 'X' && board[8] == 'X')
+		return X;
+
+	if (board[0] == 'X' && board[4] == 'X' && board[8] == 'X')
+		return X;
+	if (board[6] == 'X' && board[4] == 'X' && board[2] == 'X')
+		return X;
+
+
+	if (board[0] == 'O' && board[1] == 'O' && board[2] == 'O')
+		return O;
+	if (board[3] == 'O' && board[4] == 'O' && board[5] == 'O')
+		return O;
+	if (board[6] == 'O' && board[7] == 'O' && board[8] == 'O')
+		return O;
+
+	if (board[0] == 'O' && board[3] == 'O' && board[6] == 'O')
+		return O;
+	if (board[1] == 'O' && board[4] == 'O' && board[7] == 'O')
+		return O;
+	if (board[2] == 'O' && board[5] == 'O' && board[8] == 'O')
+		return O;
+
+	if (board[0] == 'O' && board[4] == 'O' && board[8] == 'O')
+		return O;
+	if (board[6] == 'O' && board[4] == 'O' && board[2] == 'O')
+		return O;
+
+	else
+
+	{
+		return NO_ONE;
+
+	}
+
+	// return NO_ONE;
+	// return TIE;	
 
 }
 
