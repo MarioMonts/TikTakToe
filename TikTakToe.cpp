@@ -20,7 +20,10 @@ const char NO_ONE = 'N';
 const char TIE = 'T';
 
 int main()
+
 {
+
+	setlocale(LC_ALL, "spanish");
 	char validation;
 	char player = humansymbol(); //Para que tome el valor de la funcion que creamos abajo en caso de querer comenzar primero
 	char computer = opponent(player); //Para que tome el valor contrario que elija el jugador usando la funcion de opponent
@@ -28,21 +31,20 @@ int main()
 
 
 	const int NUM_SQUARES = 9; //Contsante para declarar el tamaño
-	//vector<char> board(NUM_SQUARES, EMPTY); /// 10 es el numero de espacios y los espacios van a estar vacios
-	vector<char> board = { 'X', 'X', 'X', };
-
-
+	vector<char> board(NUM_SQUARES, EMPTY); /// 10 es el numero de espacios y los espacios van a estar vacios
 
 	//Mostrar Instrucciones
 	instrucciones();
 	
    //Funcion para que el jugador elija que letra quiere usar
 
-	validation = winner(board);
-	cout << "El ganador es " << validation << endl;
+	while (winner(board) == NO_ONE)
+	{
 
+	}
 
 }
+
 
 
 void instrucciones()
@@ -57,9 +59,6 @@ void instrucciones()
 	
 	cout << "\nQue comience la batalla!\n";
 }
-
-
-
 
 
 char AskYesNo(string question) //Esta es una funcion exclusivamente para obtener algo del answer que en este caso es Yes o No
@@ -114,62 +113,50 @@ char opponent(char player)
 }
 
 
-//Tarea: acabar la funcion y que me retorne X,O,NONE o TIE. Meter Board como Referencia y no como copia, es decir, hacerla constante(?)
-//Tarea: Solo es crear la funcion para que me retorne lo de abajo. 
-//Tarea: Para vlidar que jale, crear una nueva linea de mi vector board y agregarle valores para saber si sirve. board = {x,x,x,0,0,0...etc.)
 
 char winner(vector<char> board)
 {
-	char result;
+	//Son todas las posibilidades para ganar
+	const int WINNING_POS[8][3] = { {0, 1, 2},
+									{3, 4, 5},
+									{6, 7, 8},
+									{0, 3, 6},
+									{1, 4, 7},
+									{2, 5, 8},
+									{2, 4, 6},
+									{0, 4, 8},};
 
-	if (board[0] == 'X' && board[1] == 'X' && board[2] == 'X')
-		return X;
-	if (board[3] == 'X' && board[4] == 'X' && board[5] == 'X')
-		return X;
-	if (board[6] == 'X' && board[7] == 'X' && board[8] == 'X')
-		return X;
+	const int TOTAL_ROWS = 8;
 
-	if (board[0] == 'X' && board[3] == 'X' && board[6] == 'X')
-		return X;
-	if (board[1] == 'X' && board[4] == 'X' && board[7] == 'X')
-		return X;
-	if (board[2] == 'X' && board[5] == 'X' && board[8] == 'X')
-		return X;
-
-	if (board[0] == 'X' && board[4] == 'X' && board[8] == 'X')
-		return X;
-	if (board[6] == 'X' && board[4] == 'X' && board[2] == 'X')
-		return X;
-
-
-	if (board[0] == 'O' && board[1] == 'O' && board[2] == 'O')
-		return O;
-	if (board[3] == 'O' && board[4] == 'O' && board[5] == 'O')
-		return O;
-	if (board[6] == 'O' && board[7] == 'O' && board[8] == 'O')
-		return O;
-
-	if (board[0] == 'O' && board[3] == 'O' && board[6] == 'O')
-		return O;
-	if (board[1] == 'O' && board[4] == 'O' && board[7] == 'O')
-		return O;
-	if (board[2] == 'O' && board[5] == 'O' && board[8] == 'O')
-		return O;
-
-	if (board[0] == 'O' && board[4] == 'O' && board[8] == 'O')
-		return O;
-	if (board[6] == 'O' && board[4] == 'O' && board[2] == 'O')
-		return O;
-
-	else
-
+	//Para regresar al ganador.
+	//Logica: el for nes para ir aumentando de fila en fila porque ahí está cada condicion de gane
+	//los diferentes IFs es para que se cumpla suponiendo que la X esta en el espacio 0,1,2 y 3,4,5, etc.
+	//porque si el espacio 1 es igual al 2 y el 2 al 3, entonces se cumple el win
+	for (int row = 0; row < TOTAL_ROWS; row++)
 	{
-		return NO_ONE;
 
+if  ((board[WINNING_POS[row][0]] != EMPTY) && //Para que el espacio no este vacio
+	(board[WINNING_POS[row][0]] == board[WINNING_POS[row][1]]) && // [row] es la fila y [] es el numero de la columna
+	(board[WINNING_POS[row][1]] == board[WINNING_POS[row][2]])) // [row] es la fila y [] es el numero de la columna
+{
+	return board[WINNING_POS[row][0]];
+
+}
 	}
 
-	// return NO_ONE;
-	// return TIE;	
+	//Para regresar si es un empate. Porque checa todo el tablero que este llenom y si esta lleno y no hubo un ganador
+	//por la fucnion de arriba, significa que nadie gano
+
+	if (count(board.begin(), board.end(), EMPTY) == 0) //el count es una funcion que se reinicia
+	{
+		return TIE;
+	}
+
+	//regresar que nadie ha ganado todavia
+
+	return NO_ONE;
 
 }
 
+
+//Examen: Referencias y Matrices
