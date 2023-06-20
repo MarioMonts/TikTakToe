@@ -12,6 +12,10 @@ char AskYesNo(string question);
 char humansymbol();
 char opponent(char player);
 char winner(vector<char> board);
+void displayboard(const vector<char>& board);
+int GuessParams(string question, int a, int b);
+int playerMove(const vector<char>& board);
+
 
 const char EMPTY = ' '; //Constante global para determinar el valor en los espacios que en este caso es vacio
 const char  X = 'X'; //Creamos una variable global porque es un valor que es parte del juego
@@ -28,7 +32,7 @@ int main()
 	char player = humansymbol(); //Para que tome el valor de la funcion que creamos abajo en caso de querer comenzar primero
 	char computer = opponent(player); //Para que tome el valor contrario que elija el jugador usando la funcion de opponent
 	char turn = X ; //porque es mas natural que el juego inicie con la X. Toma su valor de la constante global
-
+	int move; //Variable para almacenar los enteros que va a meter el jugador
 
 	const int NUM_SQUARES = 9; //Contsante para declarar el tamaño
 	vector<char> board(NUM_SQUARES, EMPTY); /// 10 es el numero de espacios y los espacios van a estar vacios
@@ -38,21 +42,37 @@ int main()
 	
    //Funcion para que el jugador elija que letra quiere usar
 
+
 	while (winner(board) == NO_ONE)
 	{
+
+		if (turn == player)
+
+		{
+			//cout << "\nIngresa el espacio que deseas rellenar\n";
+			//cin >> move; //para pedirle al jugador que ingrese su movimiento
+		
+			move = playerMove(board);
+			board[move] = player; //para igualarlo al tablero
+			displayboard(board); //funcion para que me muestre el tablero actualizado
+        }
+
+		else
+
+		{
+
+		}
 
 	}
 
 }
-
-
 
 void instrucciones()
 
 {
 
 	cout << "\nBienvenido: \n";
-	cout << "\nElige una posicion entre el 0 y el 8.\n\n";
+	cout << "\nTendras que elegir una posicion en el tablero.\n\n";
 	cout << "|0|1|2|\n" ;
 	cout << "|3|4|5|\n" ;
 	cout << "|6|7|8|\n" ;
@@ -157,6 +177,85 @@ if  ((board[WINNING_POS[row][0]] != EMPTY) && //Para que el espacio no este vaci
 	return NO_ONE;
 
 }
+
+
+void displayboard(const vector<char>& board) //Funcion para acomodar el board en la vista del gato
+{
+
+	cout << board[0] << "|" << board[1] << "|" << board[2] << "|" << endl;
+	cout << board[3] << "|" << board[4] << "|" << board[5] << "|" << endl;
+	cout << board[6] << "|" << board[7] << "|" << board[8] << "|" << endl;
+}
+
+//funcion para que el resultado de GuessParams me lo guarde en un variable de Entero
+
+int playerMove(const vector<char>& board)
+{
+	int numb = GuessParams("\nElige un numero ", 8, 0);
+	if (numb != EMPTY)
+	{
+		return numb;
+
+	}
+	
+	else
+
+	{
+
+		cout << "This space is already taken" << endl;
+
+	}
+}
+
+
+
+
+//Funcion para pedirle un valor al jugador y que solo me acepte valores correctos 
+int GuessParams(string question, int a, int b)
+{
+
+	string input;
+	bool isValid = false;
+	// int num = 0; /// Esta variable solo existe dentro de la funcion. Por lo tanto no puede usarse en el main
+	//si quisiera una variable global (que funcione en todos lados), tendria que ir arriba del main. Pero esto no es buena practica
+	//nunca hacer globales. Hay que hacer variables constantes. 
+
+	//Funciona al revés tambié, si pusiera una variable de main aquí, no la reconocería la función
+
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+	do {
+
+		cout << question << "entre " << b << " y " << a << endl;
+		getline(cin, input); //se usa para que el jugador meta strings con espacios
+		
+
+		for (char c : input) // forma corta de hacer el for. Todo se almacena en la c hasta que se recorre todo el input
+
+		{
+			if (isdigit(c)) // el ! es para negar algo, es lo mismo a isdigit = false
+			{
+				isValid = true;
+				break;
+			}
+
+		}
+
+
+		if (!isValid)
+		{
+			cout << "Entrada invalida, por favor elige solo numeros.";
+
+		}
+
+	} while (!isValid || input.empty());
+
+	// while (num > a || num < b); //el AND aqui no funcionaba porque no era posible. Se usa un OR
+
+	return stoi(input); //String to Int es par aconvertir un string a un entero
+
+}
+
 
 
 //Examen: Referencias y Matrices
