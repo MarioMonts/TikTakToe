@@ -1,4 +1,2 @@
-﻿  TikTakToe.cpp
-C:\Users\ALUMNOS\Desktop\MarioMontes\ProgramacionII\TikTakToe\TikTakToe.cpp(31,7): warning C4101: 'validation': variable local sin referencia
-C:\Users\ALUMNOS\Desktop\MarioMontes\ProgramacionII\TikTakToe\TikTakToe.cpp(208): warning C4715: 'playerMove': no todas las rutas de acceso de control devuelven un valor
-  TikTakToe.vcxproj -> C:\Users\ALUMNOS\Desktop\MarioMontes\ProgramacionII\TikTakToe\Debug\TikTakToe.exe
+﻿  LINK : C:\Users\montesma\Documents\Personal\Semestre II\ProgramacionII\TikTakToe\Debug\TikTakToe.exe not found or not built by the last incremental link; performing full link
+  TikTakToe.vcxproj -> C:\Users\montesma\Documents\Personal\Semestre II\ProgramacionII\TikTakToe\Debug\TikTakToe.exe

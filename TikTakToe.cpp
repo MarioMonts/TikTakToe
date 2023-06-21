@@ -15,6 +15,7 @@ char winner(vector<char> board);
 void displayboard(const vector<char>& board);
 int GuessParams(string question, int a, int b);
 int playerMove(const vector<char>& board);
+int validSpace(const vector<char>& board, int numb);
 
 
 const char EMPTY = ' '; //Constante global para determinar el valor en los espacios que en este caso es vacio
@@ -187,31 +188,48 @@ void displayboard(const vector<char>& board) //Funcion para acomodar el board en
 	cout << board[6] << "|" << board[7] << "|" << board[8] << "|" << endl;
 }
 
-//funcion para que el resultado de GuessParams me lo guarde en un variable de Entero
 
-int playerMove(const vector<char>& board)
+
+int playerMove(const vector<char>& board) //funcion para que el resultado de GuessParams me lo guarde en un variable de Entero y después llame a ValidSpace para ver si no se ha repetido ya en el tablero
 {
-	int numb = GuessParams("\nElige un numero ", 8, 0);
-	if (numb != EMPTY)
-	{
-		return numb;
+	int numb;
+	bool legal;
 
-	}
-	
-	else
-
+	do
 	{
 
-		cout << "This space is already taken" << endl;
+		numb = GuessParams("\nElige un numero ", 8, 0);
+		legal = validSpace(board, numb);
 
-	}
+	} while (!legal);
+	cout << "Valor aceptado\n";
+	return numb;
 }
 
 
 
 
-//Funcion para pedirle un valor al jugador y que solo me acepte valores correctos 
-int GuessParams(string question, int a, int b)
+int validSpace(const vector<char>& board, int numb) //Funcion para que se valide que lo que metio el jugador si sea una casilla no repetida
+{
+
+
+if (board[numb] == EMPTY)
+{
+	return true;
+}
+
+else
+{
+	cout << "Este estpacio ya esta utilizado\n";
+	return false;
+
+}
+
+}
+
+
+
+int GuessParams(string question, int a, int b) //Funcion para pedirle un valor al jugador y que solo me acepte valores correctos 
 {
 
 	string input;
