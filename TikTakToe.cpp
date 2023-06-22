@@ -16,6 +16,8 @@ void displayboard(const vector<char>& board);
 int GuessParams(string question, int a, int b);
 int playerMove(const vector<char>& board);
 int validSpace(const vector<char>& board, int numb);
+char AskParImpar(string question);
+char ParImpar();
 
 
 const char EMPTY = ' '; //Constante global para determinar el valor en los espacios que en este caso es vacio
@@ -30,7 +32,7 @@ int main()
 
 	setlocale(LC_ALL, "spanish");
 	char validation;
-	char player = humansymbol(); //Para que tome el valor de la funcion que creamos abajo en caso de querer comenzar primero
+	char player = ParImpar(); //Para que tome el valor de la funcion que creamos abajo en caso de querer comenzar primero
 	char computer = opponent(player); //Para que tome el valor contrario que elija el jugador usando la funcion de opponent
 	char turn = X ; //porque es mas natural que el juego inicie con la X. Toma su valor de la constante global
 	int move; //Variable para almacenar los enteros que va a meter el jugador
@@ -116,6 +118,118 @@ char humansymbol() //esta funcion es para usar el Yes o No de arriba y asignar O
 	}
 
 }
+
+//FUNCIONES PARA EXAMEN
+
+char AskParImpar(string question) //Esta es una funcion exclusivamente para obtener algo del answer que en este caso es Yes o No
+{
+
+	char answerparimpar;
+
+	do
+	{
+		cout << "\n" << question << "(P/I)";
+		cin >> answerparimpar;
+
+	} while (answerparimpar != 'P' && answerparimpar != 'I');
+
+	return answerparimpar;
+
+
+
+}
+
+
+char ParImpar()
+
+{
+	char gofirst2 = AskParImpar("Deseas elegir Par o Impar? Selecciona P o I respectivamente");
+
+	if (gofirst2 == 'P')
+	{
+
+		cout << "Elegiste Par" << endl;
+
+	}
+
+	else
+
+	{
+		cout << "Elegiste Impar" << endl;
+
+
+
+	}
+
+	//Simulaciond de dado
+
+	cout << "Vamos a tirar un dado" << endl;
+
+	int high = 7;
+	int low = 1;
+	
+
+	srand(static_cast<unsigned int>(time(0)));
+	int randomNumber = low + (rand() % (high - low));
+	int secretNumber = randomNumber;
+
+	cout << "El resultado del dado es: " << secretNumber << endl; //Depuracion
+	cout << "\n" << endl;
+
+	if (secretNumber == 2 || secretNumber == 4 || secretNumber == 6)
+
+	{
+		cout << "El resultado es Par" << endl;
+		
+
+	}
+
+	else
+
+	{
+		cout << "El resultado es Impar" << endl;
+		
+
+	}
+
+
+	if ((gofirst2 == 'P') && secretNumber == 2 || secretNumber == 4 || secretNumber == 6)
+	{
+		cout << "Felicidades, te toca iniciar la partida" << endl;
+		return X;
+
+		
+	}
+
+	if ((gofirst2 == 'I') && secretNumber == 1 || secretNumber == 3 || secretNumber == 5)
+	{
+
+		cout << "Felicidades, te toca iniciar la partida" << endl;
+		return X;
+	}
+
+	else
+	{
+		cout << "Perdiste, comenzaras en el segundo turno" << endl;
+		return O;
+	}
+
+
+	
+
+	
+
+}
+
+
+
+
+
+
+
+
+
+
 
 char opponent(char player)
 {
