@@ -1,3 +1,5 @@
 ﻿  TikTakToe.cpp
-C:\Users\ALUMNOS\Documents\Mario Montes\ProgramacionII\TikTakToe\TikTakToe.cpp(34,7): warning C4101: 'validation': variable local sin referencia
+C:\Users\ALUMNOS\Documents\Mario Montes\ProgramacionII\TikTakToe\TikTakToe.cpp(37,7): warning C4101: 'validation': variable local sin referencia
+C:\Users\ALUMNOS\Documents\Mario Montes\ProgramacionII\TikTakToe\TikTakToe.cpp(391,29): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\ALUMNOS\Documents\Mario Montes\ProgramacionII\TikTakToe\TikTakToe.cpp(416,30): warning C4018: '<': no coinciden signed/unsigned
   TikTakToe.vcxproj -> C:\Users\ALUMNOS\Documents\Mario Montes\ProgramacionII\TikTakToe\Debug\TikTakToe.exe

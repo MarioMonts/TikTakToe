@@ -20,6 +20,7 @@ char AskParImpar(string question);
 char ParImpar();
 int humanMove(const vector<char>& board);
 int computerMove(vector<char> board, char computer);
+void announceWinner(char winner, char human, char computer);
 
 
 const char EMPTY = ' '; //Constante global para determinar el valor en los espacios que en este caso es vacio
@@ -48,27 +49,28 @@ int main()
 	//Funcion para que el jugador elija que letra quiere usar
 
 
-	while (winner(board) == NO_ONE)
+	while (winner(board) == NO_ONE) //Mientras nadie haya ganado
 	{
 
-		if (turn == player)
+		if (turn == player) //si yo decidi empezar entonces hago mi movimiento 
 
 		{
-			//cout << "\nIngresa el espacio que deseas rellenar\n";
-			//cin >> move; //para pedirle al jugador que ingrese su movimiento
-
-			move = humanMove(board);
+			move = humanMove(board); //mi movimiento se reemplaza en el tablero
 			board[move] = player; //para igualarlo al tablero
-			displayboard(board); //funcion para que me muestre el tablero actualizado
 		}
 
 		else
 
 		{
-
+			move = computerMove(board, computer); //para que se ejecute el turno de la PC
+			board[move] = computer; //para igualarlo al tablero
 		}
 
+		turn = opponent(turn); //El opuesto de X seria la 0 y el de la 0 es la X
+		displayboard(board); //para mostrar el tablero actualizado
 	}
+
+	announceWinner(winner(board), player, computer);
 
 }
 
@@ -354,8 +356,16 @@ void displayboard(const vector<char>& board) //Funcion para acomodar el board en
 inline bool isLegal(int move, const vector<char>& board) //funcion para que valide que el jugador esta ingresando un valor en un espacio vacio
 
 {
+	bool isLegal = false;
 
-	return (board[move] == EMPTY);
+	if (board[move] == EMPTY)
+	{
+		isLegal = true;
+	}
+
+	return isLegal;
+		
+    //return (board[move] == EMPTY); Esto de aqui es lo mismo que todo lo de arriba
 }
 
 
@@ -373,7 +383,7 @@ int humanMove(const vector<char>& board) //Funcion para que se valide que lo que
 	return move;
 }
 
-int computerMove(vector<char> board, char computer)
+int computerMove(vector<char> board, char computer) // Esta parte es para saber si la compu es la que va a ganar ya en este turno. El board NO va como referencia porque solo quiere hacer simulaciones, no quiere cambiar el tablero de verdad
 {
 	int move = 0;
 	bool foundSpace = false;
@@ -384,6 +394,12 @@ int computerMove(vector<char> board, char computer)
 		{
 			board[move] = computer;
 			foundSpace = winner(board) == computer;
+
+			if (winner(board) == computer) {
+				foundSpace = true;
+			}
+
+			board[move] = EMPTY;
 		}
 
 		if (!foundSpace)
@@ -392,6 +408,7 @@ int computerMove(vector<char> board, char computer)
 		}
 	}
 
+	// Este es el ciclo para que la PC sepa donde poner su valor para que el oponente no gane
 	if (!foundSpace)
 	{
 		move = 0;
@@ -402,6 +419,7 @@ int computerMove(vector<char> board, char computer)
 			{
 				board[move] = human;
 				foundSpace = winner(board) == human;
+				board[move] = EMPTY;
 			}
 
 			if (!foundSpace)
@@ -411,11 +429,11 @@ int computerMove(vector<char> board, char computer)
 		}
 	}
 
-	//Find the best move starting on center
+	//Para que la PC sepa cuales son las mejores posiciones para usar en caso de que no haya ganador todavia
 	if (!foundSpace) {
 		move = 0;
 		unsigned int i = 0;
-		const int BEST_MOVE[] = { 4, 0, 2, 6, 8, 1, 3, 5, 7 };
+		const int BEST_MOVE[] = { 4, 0, 2, 6, 8, 1, 3, 5, 7 }; //Los valores dentro del vector son los valores dentro del board ordenado con prioridad de ganar. Comenzamos con el centro y luego las esquinas
 
 		while (!foundSpace && i < board.size()) {
 
@@ -434,3 +452,27 @@ int computerMove(vector<char> board, char computer)
 }
 
 
+void announceWinner(char winner, char human, char computer) //Funcion para anunciar quien es el ganador
+
+{
+	if (winner == computer)
+	{
+
+		cout << "El ganador es " << winner << endl;
+		cout << "El ganador es la PC. Ganaron las maquinas!" << endl;
+
+	}
+
+	else if (winner == human)
+	{
+		cout << "El ganador es " << winner << endl;
+		cout << "Ha ganado el humano" << endl;
+	}
+
+	else
+	{
+		cout << "Es un empate" << endl;
+		cout << "Que suerte tienes Humano" << endl;
+	}
+	
+}
